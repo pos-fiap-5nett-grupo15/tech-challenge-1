@@ -1,5 +1,7 @@
 #!/bin/bash
-/usr/config/configure-db.sh &
 
 # start sql server
-/opt/mssql/bin/sqlservr
+/opt/mssql/bin/sqlservr &
+
+/usr/config/configure-db.sh
+
