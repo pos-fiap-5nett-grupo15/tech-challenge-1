@@ -1,4 +1,13 @@
+using ContactsManagement.Domain.Interfaces;
+using ContactsManagement.Infrastructure.Data;
+using ContactsManagement.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 // Add services to the container.
 
