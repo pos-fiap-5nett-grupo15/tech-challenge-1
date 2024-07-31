@@ -45,6 +45,9 @@ public class Program
 
     static public void ConfigureDatabaseServices(IServiceCollection services)
     {
+        services.AddSingleton<DapperContext>();
+        services.AddScoped<IContactRepository, ContactRepository>();
+        
         services.AddSingleton<IAppSettings, AppSettings>();
         services.AddScoped<DbSession>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
