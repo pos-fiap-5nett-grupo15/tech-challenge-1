@@ -3,6 +3,4 @@
 namespace ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
 
 public interface IGetContactBydIdHandler
-{
-    Task<GetContactBydIdResponse> HandleAsync(GetContactBydIdRequest request);
-}
+    : IRequestHandler<GetContactBydIdRequest, GetContactBydIdResponse> { }

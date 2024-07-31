@@ -24,19 +24,46 @@ namespace ContactsManagement.Domain.Repositories
                           ('{model.Nome}',
                            '{model.Email}',
                            {model.Ddd},
-                           {model.Telefone})",
-                null,
+                           {model.Telefone});",
                 _session.Transaction);
 
         public async Task<ContactEntity?> GetByIdAsync(int id) =>
             await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $"SELECT * FROM [{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id}",
+                $"SELECT * FROM [{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
                 _session.Transaction);
 
-        public async Task<IEnumerable<ContactEntity>> GetListPaginatedByFiltersAsync() =>
+        public async Task DeleteByIdAsync(int id) =>
+            await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
+                $"DELETE FROM [{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
+                _session.Transaction);
+
+        public async Task UpdateByIdAsync(int id, string? nome, string? email, int? ddd, int? telefone) =>
+            await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
+                $@"UPDATE [{TABLE_NAME}]
+                   SET
+                    {(string.IsNullOrWhiteSpace(nome)
+                        ? string.Empty
+                        : $"{nameof(ContactEntity.Nome)} = '{nome}'")}
+                    {(string.IsNullOrWhiteSpace(email)
+                        ? string.Empty
+                        : $",{nameof(ContactEntity.Email)} = '{email}'")}
+                    {(!ddd.HasValue
+                        ? string.Empty
+                        : $",{nameof(ContactEntity.Ddd)} = {ddd}")}
+                    {(!telefone.HasValue
+                        ? string.Empty
+                        : $",{nameof(ContactEntity.Telefone)} = {telefone}")}
+                   WHERE {nameof(ContactEntity.Id)} = {id};",
+                _session.Transaction);
+
+        public async Task<IEnumerable<ContactEntity>> GetListPaginatedByFiltersAsync(int? ddd, int currentIndex, int pageSize) =>
             await _session.Connection.QueryAsync<ContactEntity>(
-                $"SELECT * FROM [{TABLE_NAME}]",
-                null,
+                $@"SELECT * FROM [{TABLE_NAME}]
+                   {(!ddd.HasValue
+                        ? string.Empty
+                        : $"WHERE {nameof(ContactEntity.Ddd)} = {ddd}")}
+                   ORDER BY {nameof(ContactEntity.Id)} ASC
+                   OFFSET {currentIndex} ROWS FETCH FIRST {pageSize} ROWS ONLY;",
                 _session.Transaction);
     }
 }

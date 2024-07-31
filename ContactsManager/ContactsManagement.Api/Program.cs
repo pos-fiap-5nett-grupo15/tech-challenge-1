@@ -1,7 +1,13 @@
 using ContactsManagement.Application.Handlers.Contact.CreateContact;
+using ContactsManagement.Application.Handlers.Contact.DeleteContactById;
 using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
+using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Application.Handlers.Contact.UpdateContactById;
 using ContactsManagement.Application.Interfaces.Contact.CreateContact;
+using ContactsManagement.Application.Interfaces.Contact.DeleteContactById;
 using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
+using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Application.Interfaces.Contact.UpdateContactById;
 using ContactsManagement.Domain.Repositories;
 using ContactsManagement.Infrastructure.Data;
 using ContactsManagement.Infrastructure.Middlewares;
@@ -53,5 +59,8 @@ public class Program
     {
         services.AddScoped<ICreateContactHandler, CreateContactHandler>();
         services.AddScoped<IGetContactBydIdHandler, GetContactBydIdHandler>();
+        services.AddScoped<IDeleteContactByIdHandler, DeleteContactByIdHandler>();
+        services.AddScoped<IUpdateContactByIdHandler, UpdateContactByIdHandler>();
+        services.AddScoped<IGetContatListPaginatedByFiltersHandler, GetContatListPaginatedByFiltersHandler>();
     }
 }

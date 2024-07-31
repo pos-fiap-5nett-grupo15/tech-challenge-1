@@ -14,7 +14,7 @@ public class GetContactBydIdHandler : IGetContactBydIdHandler
 
     public async Task<GetContactBydIdResponse> HandleAsync(GetContactBydIdRequest request)
     {
-        var contact = await _contactRepository.GetByIdAsync(int.Parse(request.Id));
+        var contact = await _contactRepository.GetByIdAsync(request.Id);
 
         return Mapper(contact);
     }

@@ -1,6 +1,3 @@
-﻿namespace ContactsManagement.Application.DTOs.Contact.CreateContact
-{
-    public class CreateContactResponse : BaseReponse
-    {
-    }
-}
+﻿namespace ContactsManagement.Application.DTOs.Contact.CreateContact;
+
+public class CreateContactResponse : BaseReponse { }
