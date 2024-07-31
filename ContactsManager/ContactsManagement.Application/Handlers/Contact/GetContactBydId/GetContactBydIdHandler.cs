@@ -19,7 +19,7 @@ public class GetContactBydIdHandler : IGetContactBydIdHandler
         return Mapper(contact);
     }
 
-    static public GetContactBydIdResponse? Mapper(ContactModel? model) =>
+    static public GetContactBydIdResponse? Mapper(ContactEntity? model) =>
         model is null
         ? null
         : new GetContactBydIdResponse

@@ -3,9 +3,8 @@ using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
 using ContactsManagement.Application.Interfaces.Contact.CreateContact;
 using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
 using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Data;
 using ContactsManagement.Infrastructure.Middlewares;
-using ContactsManagement.Infrastructure.Settings;
-using ContactsManagement.Infrastructure.SqlServer;
 using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Api;
@@ -46,18 +45,12 @@ public class Program
     static public void ConfigureDatabaseServices(IServiceCollection services)
     {
         services.AddSingleton<DapperContext>();
-        services.AddScoped<IContactRepository, ContactRepository>();
-        
-        services.AddSingleton<IAppSettings, AppSettings>();
-        services.AddScoped<DbSession>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddTransient<IContactRepository, ContactRepository>();
     }
 
     static public void ConfigureHandleServices(IServiceCollection services)
     {
-        services.AddSingleton<IAppSettings, AppSettings>();
-        services.AddScoped<DbSession>();
         services.AddScoped<ICreateContactHandler, CreateContactHandler>();
         services.AddScoped<IGetContactBydIdHandler, GetContactBydIdHandler>();
     }

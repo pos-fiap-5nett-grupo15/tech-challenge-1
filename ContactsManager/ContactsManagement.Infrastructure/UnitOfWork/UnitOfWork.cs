@@ -1,12 +1,12 @@
-﻿using ContactsManagement.Infrastructure.SqlServer;
+﻿using ContactsManagement.Infrastructure.Data;
 
 namespace ContactsManagement.Infrastructure.UnitOfWork;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
-    private readonly DbSession _session;
+    private readonly DapperContext _session;
 
-    public UnitOfWork(DbSession session) => 
+    public UnitOfWork(DapperContext session) => 
         _session = session;
 
     #region Transaction methods:

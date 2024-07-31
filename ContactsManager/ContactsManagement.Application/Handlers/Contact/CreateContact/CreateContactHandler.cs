@@ -18,9 +18,8 @@ public class CreateContactHandler : ICreateContactHandler
         return new CreateContactResponse();
     }
 
-    public static ContactModel Mapper(CreateContactRequest request) =>
-        new(id: new Random().Next(0, int.MaxValue),
-            nome: request.Nome ?? string.Empty,
+    public static ContactEntity Mapper(CreateContactRequest request) =>
+        new(nome: request.Nome ?? string.Empty,
             email: request.Email ?? string.Empty,
             ddd: request.Ddd,
             telefone: request.Telefone);
