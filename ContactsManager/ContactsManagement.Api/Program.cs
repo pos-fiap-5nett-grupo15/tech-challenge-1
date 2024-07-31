@@ -1,25 +1,61 @@
-var builder = WebApplication.CreateBuilder(args);
+using ContactsManagement.Application.Handlers.Contact.CreateContact;
+using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
+using ContactsManagement.Application.Interfaces.Contact.CreateContact;
+using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
+using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Middlewares;
+using ContactsManagement.Infrastructure.Settings;
+using ContactsManagement.Infrastructure.SqlServer;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
-// Add services to the container.
+namespace ContactsManagement.Api;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        ConfigureServices(builder.Services);
+        ConfigureDatabaseServices(builder.Services);
+        ConfigureHandleServices(builder.Services);
+
+        var app = builder.Build();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseCors();
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+        app.Run();
+    }
+
+    static public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+    }
+
+    static public void ConfigureDatabaseServices(IServiceCollection services)
+    {
+        services.AddSingleton<IAppSettings, AppSettings>();
+        services.AddScoped<DbSession>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IContactRepository, ContactRepository>();
+    }
+
+    static public void ConfigureHandleServices(IServiceCollection services)
+    {
+        services.AddSingleton<IAppSettings, AppSettings>();
+        services.AddScoped<DbSession>();
+        services.AddScoped<ICreateContactHandler, CreateContactHandler>();
+        services.AddScoped<IGetContactBydIdHandler, GetContactBydIdHandler>();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
