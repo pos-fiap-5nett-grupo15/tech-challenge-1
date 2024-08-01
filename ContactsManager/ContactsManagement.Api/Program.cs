@@ -1,34 +1,66 @@
-using ContactsManagement.Domain.Interfaces;
+using ContactsManagement.Application.Handlers.Contact.CreateContact;
+using ContactsManagement.Application.Handlers.Contact.DeleteContactById;
+using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
+using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Application.Handlers.Contact.UpdateContactById;
+using ContactsManagement.Application.Interfaces.Contact.CreateContact;
+using ContactsManagement.Application.Interfaces.Contact.DeleteContactById;
+using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
+using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Application.Interfaces.Contact.UpdateContactById;
+using ContactsManagement.Domain.Repositories;
 using ContactsManagement.Infrastructure.Data;
-using ContactsManagement.Infrastructure.Repositories;
+using ContactsManagement.Infrastructure.Middlewares;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace ContactsManagement.Api;
 
-
-
-builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        ConfigureServices(builder.Services);
+        ConfigureDatabaseServices(builder.Services);
+        ConfigureHandleServices(builder.Services);
+
+        var app = builder.Build();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseCors();
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+        app.Run();
+    }
+
+    static public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+    }
+
+    static public void ConfigureDatabaseServices(IServiceCollection services)
+    {
+        services.AddSingleton<DapperContext>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IContactRepository, ContactRepository>();
+    }
+
+    static public void ConfigureHandleServices(IServiceCollection services)
+    {
+        services.AddScoped<ICreateContactHandler, CreateContactHandler>();
+        services.AddScoped<IGetContactBydIdHandler, GetContactBydIdHandler>();
+        services.AddScoped<IDeleteContactByIdHandler, DeleteContactByIdHandler>();
+        services.AddScoped<IUpdateContactByIdHandler, UpdateContactByIdHandler>();
+        services.AddScoped<IGetContatListPaginatedByFiltersHandler, GetContatListPaginatedByFiltersHandler>();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
