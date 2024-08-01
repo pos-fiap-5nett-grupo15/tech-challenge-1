@@ -7,7 +7,7 @@ using ContactsManagement.Domain.Repositories;
 namespace ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
 
 public class GetContatListPaginatedByFiltersHandler 
-    : IGetContatListPaginatedByFiltersHandler
+    : IGetContactListPaginatedByFiltersHandler
 {
     private readonly IContactRepository _contactRepository;
 

@@ -61,6 +61,6 @@ public class Program
         services.AddScoped<IGetContactBydIdHandler, GetContactBydIdHandler>();
         services.AddScoped<IDeleteContactByIdHandler, DeleteContactByIdHandler>();
         services.AddScoped<IUpdateContactByIdHandler, UpdateContactByIdHandler>();
-        services.AddScoped<IGetContatListPaginatedByFiltersHandler, GetContatListPaginatedByFiltersHandler>();
+        services.AddScoped<IGetContactListPaginatedByFiltersHandler, GetContatListPaginatedByFiltersHandler>();
     }
 }
