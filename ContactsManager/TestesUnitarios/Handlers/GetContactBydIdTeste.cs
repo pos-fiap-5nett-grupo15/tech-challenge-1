@@ -1,15 +1,8 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
-using ContactsManagement.Application.Handlers.Contact.CreateContact;
+﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
 using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Repositories;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestesUnitarios.Handlers
 {

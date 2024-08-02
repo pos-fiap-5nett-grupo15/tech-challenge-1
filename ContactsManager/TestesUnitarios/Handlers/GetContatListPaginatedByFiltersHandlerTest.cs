@@ -1,6 +1,4 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
-using ContactsManagement.Application.Handlers.Contact.CreateContact;
+﻿using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Domain.Repositories;
 using Moq;

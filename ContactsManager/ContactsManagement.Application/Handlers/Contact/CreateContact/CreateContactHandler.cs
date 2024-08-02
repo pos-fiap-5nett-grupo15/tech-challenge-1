@@ -3,7 +3,6 @@ using ContactsManagement.Application.Interfaces.Contact.CreateContact;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Entities.Validations;
 using ContactsManagement.Domain.Repositories;
-using FluentValidation;
 
 namespace ContactsManagement.Application.Handlers.Contact.CreateContact;
 

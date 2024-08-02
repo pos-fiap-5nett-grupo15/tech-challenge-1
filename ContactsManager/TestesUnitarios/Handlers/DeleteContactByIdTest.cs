@@ -1,6 +1,4 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.Contact.DeleteContactById;
-using ContactsManagement.Application.Handlers.Contact.CreateContact;
+﻿using ContactsManagement.Application.DTOs.Contact.DeleteContactById;
 using ContactsManagement.Application.Handlers.Contact.DeleteContactById;
 using ContactsManagement.Domain.Repositories;
 using Moq;

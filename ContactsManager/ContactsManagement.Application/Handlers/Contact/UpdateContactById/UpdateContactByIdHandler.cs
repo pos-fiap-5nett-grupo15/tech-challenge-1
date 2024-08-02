@@ -1,8 +1,6 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
+﻿using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.UpdateContactById;
-using ContactsManagement.Domain.Entities.Validations;
 using ContactsManagement.Domain.Repositories;
 
 namespace ContactsManagement.Application.Handlers.Contact.UpdateContactById;

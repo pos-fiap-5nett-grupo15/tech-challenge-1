@@ -1,10 +1,8 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
+﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
 using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Entities.Validations;
 using ContactsManagement.Domain.Repositories;
 
 namespace ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
