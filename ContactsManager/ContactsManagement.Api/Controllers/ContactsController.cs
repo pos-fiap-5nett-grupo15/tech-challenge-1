@@ -23,14 +23,14 @@ namespace ContactsManagement.Api.Controllers
         private readonly IGetContactBydIdHandler _getContactBydIdHandler;
         private readonly IDeleteContactByIdHandler _deleteContactByIdHandler;
         private readonly IUpdateContactByIdHandler _updateContactByIdHandler;
-        private readonly IGetContatListPaginatedByFiltersHandler _getContatListPaginatedByFiltersHandler;
+        private readonly IGetContactListPaginatedByFiltersHandler _getContatListPaginatedByFiltersHandler;
 
         public ContactsController(
             ICreateContactHandler createContactHandler,
             IGetContactBydIdHandler getContactBydIdHandler,
             IDeleteContactByIdHandler deleteContactByIdHandler,
             IUpdateContactByIdHandler updateContactByIdHandler,
-            IGetContatListPaginatedByFiltersHandler getContatListPaginatedByFiltersHandler)
+            IGetContactListPaginatedByFiltersHandler getContatListPaginatedByFiltersHandler)
         {
             _createContactHandler = createContactHandler;
             _getContactBydIdHandler = getContactBydIdHandler;

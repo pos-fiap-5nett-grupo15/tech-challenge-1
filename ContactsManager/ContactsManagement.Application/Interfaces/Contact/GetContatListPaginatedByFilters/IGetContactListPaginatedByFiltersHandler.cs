@@ -2,5 +2,5 @@
 
 namespace ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
 
-public interface IGetContatListPaginatedByFiltersHandler
+public interface IGetContactListPaginatedByFiltersHandler
     : IRequestHandler<GetContatListPaginatedByFiltersRequest, GetContatListPaginatedByFiltersResponse> { }
