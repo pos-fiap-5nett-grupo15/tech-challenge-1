@@ -1,7 +1,10 @@
-﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
+﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
+using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
 using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Domain.Entities;
+using ContactsManagement.Domain.Entities.Validations;
 using ContactsManagement.Domain.Repositories;
 
 namespace ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
@@ -16,9 +19,30 @@ public class GetContatListPaginatedByFiltersHandler
 
     public async Task<GetContatListPaginatedByFiltersResponse> HandleAsync(GetContatListPaginatedByFiltersRequest request)
     {
-        var contacts = await _contactRepository.GetListPaginatedByFiltersAsync(request.Ddd, request.CurrentPage, request.PageSize);
+        var validator = new ContactListPaginatedValidation();
+        var result = validator.Validate(request);
 
-        return new GetContatListPaginatedByFiltersResponse { Contacts = Mapper(contacts.ToList()) };
+        if (!result.IsValid)
+        {
+            var erroMensagem = "";
+
+            foreach (var error in result.Errors)
+            {
+                erroMensagem += error.ErrorMessage + " ";
+            }
+
+            var retorno = new GetContatListPaginatedByFiltersResponse();
+            retorno.ErrorDescription = erroMensagem;
+
+            return retorno;
+
+        }
+        else
+        {
+            var contacts = await _contactRepository.GetListPaginatedByFiltersAsync(request.Ddd, request.CurrentPage, request.PageSize);
+
+            return new GetContatListPaginatedByFiltersResponse { Contacts = Mapper(contacts.ToList()) };
+        }
     }
 
     static public IEnumerable<GetContactBydIdResponse> Mapper(List<ContactEntity> models) =>

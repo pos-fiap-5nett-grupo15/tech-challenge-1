@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Api", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Application", "ContactsManagement.Application\ContactsManagement.Application.csproj", "{2A57C438-BC6F-4D91-AD9C-09975B91AB9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManagement.Domain", "ContactsManagement.Domain\ContactsManagement.Domain.csproj", "{74DDE790-5919-4F78-90C2-B308599A3C26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Domain", "ContactsManagement.Domain\ContactsManagement.Domain.csproj", "{74DDE790-5919-4F78-90C2-B308599A3C26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManagement.Infrastructure", "ContactsManagement.Infrastructure\ContactsManagement.Infrastructure.csproj", "{475C116F-B5E8-4522-99B2-596331D0CDAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Infrastructure", "ContactsManagement.Infrastructure\ContactsManagement.Infrastructure.csproj", "{475C116F-B5E8-4522-99B2-596331D0CDAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestesUnitarios", "TestesUnitarios\TestesUnitarios.csproj", "{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{475C116F-B5E8-4522-99B2-596331D0CDAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{475C116F-B5E8-4522-99B2-596331D0CDAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{475C116F-B5E8-4522-99B2-596331D0CDAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
