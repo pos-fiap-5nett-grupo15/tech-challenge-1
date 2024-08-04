@@ -42,7 +42,7 @@ namespace ContactsManagement.Application.Handlers.Auth
                         new Claim(ClaimTypes.Name, user.Username),
                         new Claim(ClaimTypes.Role, user.UserType.ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpiresInMinutes),
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(securityKey),
                         SecurityAlgorithms.HmacSha256Signature)

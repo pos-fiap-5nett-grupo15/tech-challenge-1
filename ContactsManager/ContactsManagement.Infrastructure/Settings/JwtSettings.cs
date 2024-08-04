@@ -9,6 +9,6 @@ namespace ContactsManagement.Infrastructure.Settings
     public class JwtSettings
     {
         public string SecretKey { get; set; }
-        public int TokenExpiresInMinutes { get; set; }
+        public int TokenExpiresInMinutes { get; set; } = 5;
     }
 }
