@@ -30,7 +30,7 @@ namespace ContactsManagement.Application.Handlers.User.UpdateUser
                 });
             }
 
-            await _userRepository.UpdateByIdAsync(request.Id.Value, request.Username, request.Password, (int)request.UserType);
+            await _userRepository.UpdateByIdAsync(request.Id.Value, request.Username, request.Password, request.UserType);
             return new UpdateUserResponse();
         }
     }

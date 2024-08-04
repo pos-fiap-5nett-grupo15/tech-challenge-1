@@ -1,52 +1,66 @@
 ﻿using ContactsManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ContactsManagement.Domain.Enums;
+using ContactsManagement.Infrastructure.Data;
+using Dapper;
 
 namespace ContactsManagement.Domain.Repositories.User
 {
     public class UserRepository : IUserRepository
     {
-        private static List<UserEntity> users = new List<UserEntity>
-        {
-            new UserEntity()
-            {
-                Username = "Admin",
-                Password = "AQAAAAIAAYagAAAAEOfBHuLJJ4s110pLUc45x6L01aAm2wyViCiDqBq94o2DX5HG5TK1O9CHT94a+IZHBg==",
-                UserType = Enums.EUserType.Administrator
-            }
-        };
+        private readonly DapperContext _session;
+        private const string TABLE_NAME = "ApiUser";
+        private const string SCHEMA = "ContactsManagement";
 
-        public async Task CreateAsync(UserEntity model)
-        {
-            users.Add(model);
-        }
+        public UserRepository(DapperContext session) => _session = session;
 
-        public async Task DeleteByIdAsync(int id)
-        {
-            users.Remove(await GetByIdAsync(id));
-        }
+        public async Task CreateAsync(UserEntity model) =>
+            await _session.Connection.ExecuteAsync(
+                $@"INSERT INTO
+                    [{SCHEMA}].[{TABLE_NAME}]
+                         ({nameof(UserEntity.Username)},
+                          {nameof(UserEntity.Password)},
+                          {nameof(UserEntity.UserType)})
+                    VALUES
+                          ('{model.Username}',
+                           '{model.Password}',
+                           {(int)model.UserType});",
+                _session.Transaction);
 
-        public async Task<IEnumerable<UserEntity>> GetAllAsync()
-        {
-            return users;
-        }
+        public async Task DeleteByIdAsync(int id) =>
+            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};",
+                _session.Transaction);
 
-        public async Task<UserEntity?> GetByIdAsync(int id)
-        {
-            return users.FirstOrDefault(u => u.Id == id);
-        }
+        public async Task<IEnumerable<UserEntity>> GetAllAsync() =>
+            await _session.Connection.QueryAsync<UserEntity>(
+                $@"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}]");
 
-        public async Task<UserEntity?> GetByNameAsync(string username)
-        {
-            return users.FirstOrDefault(u => u.Username == username);
-        }
+        public async Task<UserEntity?> GetByIdAsync(int id) =>
+            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};",
+                _session.Transaction);
 
-        public async Task UpdateByIdAsync(int id, string? username, string? password, int? userType)
-        {
+        public async Task<UserEntity?> GetByNameAsync(string username) =>
+            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Username)} = '{username}';",
+                _session.Transaction);
 
+        public async Task UpdateByIdAsync(int id, string? username, string? password, EUserType? userType)
+        {
+            var updateColumns = new List<string>();
+
+            if (!string.IsNullOrEmpty(username))
+                updateColumns.Add($"{nameof(UserEntity.Username)} = '{username}'");
+            if (!string.IsNullOrEmpty(password))
+                updateColumns.Add($"{nameof(UserEntity.Password)} = '{password}'");
+            if (userType.HasValue)
+                updateColumns.Add($"{nameof(UserEntity.UserType)} = {(int)userType.Value}");
+
+            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $@"UPDATE [{SCHEMA}].[{TABLE_NAME}]
+                   SET {string.Join(",", updateColumns)}
+                   WHERE {nameof(UserEntity.Id)} = {id};",
+                _session.Transaction);
         }
     }
 }

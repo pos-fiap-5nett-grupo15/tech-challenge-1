@@ -1,15 +1,8 @@
-﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
-using ContactsManagement.Application.DTOs.User.CreateUser;
+﻿using ContactsManagement.Application.DTOs.User.CreateUser;
 using ContactsManagement.Application.Interfaces.Auth;
-using ContactsManagement.Application.Interfaces.Contact.CreateContact;
 using ContactsManagement.Application.Interfaces.User.CreateUser;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Repositories.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsManagement.Application.Handlers.User.CreateUser
 {

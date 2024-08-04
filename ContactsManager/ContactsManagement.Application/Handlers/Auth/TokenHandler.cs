@@ -1,17 +1,12 @@
 ﻿using ContactsManagement.Application.DTOs.Auth;
 using ContactsManagement.Application.Interfaces.Auth;
 using ContactsManagement.Application.Interfaces.User.ValidateUser;
-using ContactsManagement.Domain.Repositories.User;
 using ContactsManagement.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsManagement.Application.Handlers.Auth
 {
@@ -45,7 +40,7 @@ namespace ContactsManagement.Application.Handlers.Auth
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Role, nameof(user.UserType))
+                        new Claim(ClaimTypes.Role, user.UserType.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(5),
                     SigningCredentials = new SigningCredentials(

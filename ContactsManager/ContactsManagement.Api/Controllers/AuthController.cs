@@ -1,5 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Auth;
 using ContactsManagement.Application.Interfaces.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -20,6 +21,7 @@ namespace ContactsManagement.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetToken(LoginRequest request)
         {
             var generatedToken = await _tokenHandler.HandleAsync(request);

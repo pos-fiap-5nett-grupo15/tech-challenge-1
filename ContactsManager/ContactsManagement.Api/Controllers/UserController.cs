@@ -77,18 +77,22 @@ namespace ContactsManagement.Api.Controllers
 
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status201Created)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        //[Authorize(Roles = nameof(EUserType.Administrator))]
+        [Authorize(Roles = nameof(EUserType.Administrator))]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest requestBody)
         {
             if (await _getUserByNameHandler.HandleAsync(new GetUserByNameRequest() { Username = requestBody.UserName }) != null)
                 return BadRequest("User already exists");
 
-            return Created(string.Empty, await _createUserHandler.HandleAsync(requestBody));
+            await _createUserHandler.HandleAsync(requestBody);
+            return Created();
         }
 
         [HttpPut("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(EUserType.Administrator))]
@@ -99,13 +103,15 @@ namespace ContactsManagement.Api.Controllers
             else
             {
                 requestBody.Id = id;
-                return Ok(await _updateUserHandler.HandleAsync(requestBody));
+                await _updateUserHandler.HandleAsync(requestBody);
+                return Ok();
             }
         }
 
         [HttpDelete("{id}")]
-        [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(EUserType.Administrator))]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)

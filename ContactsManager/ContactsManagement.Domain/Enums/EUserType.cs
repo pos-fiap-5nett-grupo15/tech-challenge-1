@@ -8,7 +8,7 @@ namespace ContactsManagement.Domain.Enums
 {
     public enum EUserType
     {
-        Common,
-        Administrator,
+        Common = 1,
+        Administrator = 2,
     }
 }

@@ -3,11 +3,6 @@ using ContactsManagement.Application.DTOs.User.GetUserList;
 using ContactsManagement.Application.Interfaces.User.GetUser;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Repositories.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContactsManagement.Application.Handlers.User.GetUser
 {

@@ -1141,3 +1141,22 @@ INSERT INTO tech_1.ContactsManagement.Contact (Nome,Email,Ddd,Telefone) VALUES
 	 (N'Shelly Gusikowski',N'Estel7@yahoo.com',23,57908802),
 	 (N'Karen Barton',N'Turner.Mills23@gmail.com',95,58981183),
 	 (N'Lucas Nienow',N'Erling47@hotmail.com',83,17280281);
+
+CREATE TABLE ContactsManagement.UserType(
+	Id int IDENTITY(1, 1) PRIMARY KEY,
+	Description varchar(255) UNIQUE NOT NULL
+);
+GO
+
+CREATE TABLE ContactsManagement.ApiUser (
+	Id int IDENTITY(1, 1) PRIMARY KEY,
+	Username varchar(255) NOT NULL,
+	Password varchar(255) NOT NULL,
+	UserType int NOT NULL REFERENCES ContactsManagement.UserType(Id),
+);
+GO
+
+INSERT INTO ContactsManagement.UserType(Description) VALUES('Common');
+INSERT INTO ContactsManagement.UserType(Description) VALUES('Administrator');
+INSERT INTO ContactsManagement.ApiUser (Username, Password, UserType) VALUES('Admin', 'AQAAAAIAAYagAAAAEAhqL3a26EnFvTX/QOCvf3r1Ni1yqCSzm7WXV2qgWdGivHohZJVeJj857UHaQJ/otQ==', 2);
+INSERT INTO ContactsManagement.ApiUser (Username, Password, UserType) VALUES('User', 'AQAAAAIAAYagAAAAEO5Av+AjYV5oMcMvglugM5K/yXPuH6Kx5A2D2rcgzbUDO1V23gciSOk5hvK48cbjdg==', 1);

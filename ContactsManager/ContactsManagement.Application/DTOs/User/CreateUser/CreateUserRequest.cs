@@ -1,10 +1,4 @@
-﻿using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContactsManagement.Domain.Enums;
 
 namespace ContactsManagement.Application.DTOs.User.CreateUser
 {
