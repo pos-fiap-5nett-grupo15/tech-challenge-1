@@ -121,7 +121,7 @@ namespace ContactsManagement.Api.Controllers
             else
             {
                 await _deleteUserHandler.HandleAsync(new DeleteUserRequest() { Id = id });
-                return NoContent();
+                return Ok();
             }
         }
     }

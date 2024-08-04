@@ -22,6 +22,7 @@ using ContactsManagement.Application.Interfaces.User.UpdateUser;
 using ContactsManagement.Application.Interfaces.User.ValidateUser;
 using ContactsManagement.Domain.Repositories;
 using ContactsManagement.Domain.Repositories.User;
+using ContactsManagement.Infrastructure.Crypto;
 using ContactsManagement.Infrastructure.Data;
 using ContactsManagement.Infrastructure.Middlewares;
 using ContactsManagement.Infrastructure.Settings;
@@ -40,10 +41,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
-        if (jwtSettings is null || string.IsNullOrEmpty(jwtSettings.SecretKey))
-            throw new ArgumentException("Jwt Secret Configuration");
-        else
-            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        ArgumentNullException.ThrowIfNull(jwtSettings);
+        ArgumentNullException.ThrowIfNull(jwtSettings.SecretKey);
+
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
         ConfigureAuthentication(builder.Services, jwtSettings.SecretKey);
         ConfigureServices(builder.Services);
@@ -81,6 +82,7 @@ public class Program
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
+                Description = "Insert token following the pattern: \"Bearer your_authentication_token\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
@@ -96,7 +98,7 @@ public class Program
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
-                        }
+                        },
                     },
                     Array.Empty<string>()
                 }
@@ -130,10 +132,14 @@ public class Program
         services.AddScoped<IGetUserListHandler, GetUserListHandler>();
         services.AddScoped<IUpdateUserHandler, UpdateUserHandler>();
         services.AddScoped<IValidateUserHandler, ValidateUserHandler>();
+
+        services.AddSingleton<ICryptoService>(new CryptoService());
     }
 
     static public void ConfigureAuthentication(IServiceCollection services, string key)
     {
+        var decryptedKey = new CryptoService().Decrypt(key);
+
         services.AddAuthentication(auth =>
         {
             auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -145,7 +151,7 @@ public class Program
             bearer.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(decryptedKey)),
                 ValidateIssuer = false,
                 ValidateAudience = false
             };
