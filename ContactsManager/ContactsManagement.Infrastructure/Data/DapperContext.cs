@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContactsManagement.Infrastructure.Crypto;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -9,9 +10,14 @@ public sealed class DapperContext : IDisposable
     public SqlConnection Connection { get; }
     public IDbTransaction? Transaction { get; set; }
 
-    public DapperContext(IConfiguration configuration)
+    public DapperContext(IConfiguration configuration, ICryptoService cryptoService)
     {
-        Connection = new SqlConnection(configuration.GetConnectionString("DefaultConnection") ?? string.Empty);
+        var strconnection = configuration.GetConnectionString("DefaultConnection");
+
+        if (!string.IsNullOrEmpty(strconnection))
+            strconnection = cryptoService.Decrypt(strconnection);
+
+        Connection = new SqlConnection(strconnection);
         Connection.Open();
     }
 

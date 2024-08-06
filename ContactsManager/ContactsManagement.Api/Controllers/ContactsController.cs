@@ -9,6 +9,8 @@ using ContactsManagement.Application.Interfaces.Contact.DeleteContactById;
 using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
 using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Interfaces.Contact.UpdateContactById;
+using ContactsManagement.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -42,6 +44,7 @@ namespace ContactsManagement.Api.Controllers
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status201Created)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(BaseReponse))]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateAsync(
             [FromBody] CreateContactRequest request)
         {
@@ -52,6 +55,7 @@ namespace ContactsManagement.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(BaseReponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> GetByIdAsync(
             [FromRoute] int id)
         {
@@ -64,6 +68,7 @@ namespace ContactsManagement.Api.Controllers
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> GetListPaginatedByFiltersAsync(
             [FromQuery] GetContatListPaginatedByFiltersRequest body)
         {
@@ -73,6 +78,7 @@ namespace ContactsManagement.Api.Controllers
         [HttpDelete("{id}")]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = nameof(EUserType.Administrator))]
         public async Task<IActionResult> DeleteByIdAsync(
             [FromRoute] int id)
         {
@@ -83,6 +89,7 @@ namespace ContactsManagement.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, type: typeof(BaseReponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = nameof(EUserType.Administrator))]
         public async Task<IActionResult> UpdateByIdAsync(
             [FromRoute] int id,
             [FromBody] UpdateContactByIdRequest body)
