@@ -8,6 +8,7 @@ namespace ContactsManagement.Domain.Repositories
     {
         private readonly DapperContext _session;
         private const string TABLE_NAME = "Contact";
+        private const string SCHEMA = "ContactsManagement";
 
         public ContactRepository(DapperContext session) =>
             _session = session;
@@ -15,7 +16,7 @@ namespace ContactsManagement.Domain.Repositories
         public async Task CreateAsync(ContactEntity model) =>
             await _session.Connection.ExecuteAsync(
                 $@"INSERT INTO
-                    [dbo].[{TABLE_NAME}]
+                    [{SCHEMA}].[{TABLE_NAME}]
                          ({nameof(ContactEntity.Nome)},
                           {nameof(ContactEntity.Email)},
                           {nameof(ContactEntity.Ddd)},
@@ -29,17 +30,17 @@ namespace ContactsManagement.Domain.Repositories
 
         public async Task<ContactEntity?> GetByIdAsync(int id) =>
             await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $"SELECT * FROM [{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
                 _session.Transaction);
 
         public async Task DeleteByIdAsync(int id) =>
             await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $"DELETE FROM [{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
+                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
                 _session.Transaction);
 
         public async Task UpdateByIdAsync(int id, string? nome, string? email, int? ddd, int? telefone) =>
             await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $@"UPDATE [{TABLE_NAME}]
+                $@"UPDATE [{SCHEMA}].[{TABLE_NAME}]
                    SET
                     {(string.IsNullOrWhiteSpace(nome)
                         ? string.Empty
@@ -58,7 +59,7 @@ namespace ContactsManagement.Domain.Repositories
 
         public async Task<IEnumerable<ContactEntity>> GetListPaginatedByFiltersAsync(int? ddd, int currentIndex, int pageSize) =>
             await _session.Connection.QueryAsync<ContactEntity>(
-                $@"SELECT * FROM [{TABLE_NAME}]
+                $@"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}]
                    {(!ddd.HasValue
                         ? string.Empty
                         : $"WHERE {nameof(ContactEntity.Ddd)} = {ddd}")}

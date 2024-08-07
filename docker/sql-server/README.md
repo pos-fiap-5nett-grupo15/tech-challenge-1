@@ -7,9 +7,20 @@ Criação e configuração de uma banco de dados SQL Sever local para uso pessoa
 MSSQL_PID=Developer
 ACCEPT_EULA=Y
 
-
+No folder do Dockerfile
 ```shell
 docker build -t mssql-tech-1 .
 
-docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=Q1w2e3r4' -e 'SVC_PASS=340$Uuxwp7Mcxo7Khy' -p 1433:1433 --name sql1 -d mssql-custom
+docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=Q1w2e3r4' -e 'SVC_PASS=340$Uuxwp7Mcxo7Khy' -p 1433:1433 --name sql1 -d mssql-tech-1
+```
+
+
+Outros comando
+
+```shell
+docker container kill sql1
+
+docker container rm sql1
+
+docker logs sql1
 ```
