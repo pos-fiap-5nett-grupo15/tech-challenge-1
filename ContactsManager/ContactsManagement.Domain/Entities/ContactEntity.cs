@@ -2,7 +2,7 @@
 
 public class ContactEntity : BaseEntity
 {
-    private ContactEntity() { }
+    public ContactEntity() { }
 
     public ContactEntity(
         string nome,

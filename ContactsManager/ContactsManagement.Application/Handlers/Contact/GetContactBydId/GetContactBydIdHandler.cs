@@ -1,4 +1,5 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
+using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Repositories;
@@ -14,9 +15,21 @@ public class GetContactBydIdHandler : IGetContactBydIdHandler
 
     public async Task<GetContactBydIdResponse> HandleAsync(GetContactBydIdRequest request)
     {
-        var contact = await _contactRepository.GetByIdAsync(request.Id);
 
-        return Mapper(contact);
+        var validator = new GetContactByIdValidation();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            return Mapper(null);
+
+        }
+        else
+        {
+            var contact = await _contactRepository.GetByIdAsync(request.Id);
+
+            return Mapper(contact);
+        }
     }
 
     static public GetContactBydIdResponse? Mapper(ContactEntity? model) =>

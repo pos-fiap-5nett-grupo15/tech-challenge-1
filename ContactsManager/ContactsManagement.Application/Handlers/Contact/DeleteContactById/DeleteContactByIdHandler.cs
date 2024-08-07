@@ -1,4 +1,5 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.DeleteContactById;
+using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.DeleteContactById;
 using ContactsManagement.Domain.Repositories;
 
@@ -13,7 +14,29 @@ public class DeleteContactByIdHandler : IDeleteContactByIdHandler
 
     public async Task<DeleteContactByIdResponse> HandleAsync(DeleteContactByIdRequest request)
     {
-        await _contactRepository.DeleteByIdAsync(request.Id);
-        return new DeleteContactByIdResponse();
+        var validator = new DeleteContactByIdValidation();
+        var result = validator.Validate(request);
+
+        if (!result.IsValid)
+        {
+            var erroMensagem = "";
+
+            foreach (var error in result.Errors)
+            {
+                erroMensagem += error.ErrorMessage + " ";
+            }
+
+            var retorno = new DeleteContactByIdResponse();
+            retorno.ErrorDescription = erroMensagem;
+
+            return retorno;
+
+        }
+        else
+        {
+            await _contactRepository.DeleteByIdAsync(request.Id);
+            return new DeleteContactByIdResponse();
+        }
+
     }
 }
