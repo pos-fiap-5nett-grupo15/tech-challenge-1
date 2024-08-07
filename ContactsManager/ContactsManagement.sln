@@ -11,10 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Domain",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Infrastructure", "ContactsManagement.Infrastructure\ContactsManagement.Infrastructure.csproj", "{475C116F-B5E8-4522-99B2-596331D0CDAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsManagment.Crypto.Test", "ContactsManagment.Crypto.Test\ContactsManagment.Crypto.Test.csproj", "{27B4F500-4D13-447A-A444-E3CBE95E9367}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagement.Infrastructure", "ContactsManagement.Infrastructure\ContactsManagement.Infrastructure.csproj", "{475C116F-B5E8-4522-99B2-596331D0CDAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsManagment.Crypto.Test", "ContactsManagment.Crypto.Test\ContactsManagment.Crypto.Test.csproj", "{27B4F500-4D13-447A-A444-E3CBE95E9367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestesUnitarios", "TestesUnitarios\TestesUnitarios.csproj", "{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestesUnitarios", "TestesUnitarios\TestesUnitarios.csproj", "{3514FE9E-8FA4-4F65-AB8A-D78EED72A49E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

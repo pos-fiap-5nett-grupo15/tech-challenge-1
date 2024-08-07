@@ -18,11 +18,11 @@ namespace TestesUnitarios.Controllers
         private readonly Mock<IGetContactBydIdHandler> _getContactBydIdHandler;
         private readonly Mock<IDeleteContactByIdHandler> _deleteContactByIdHandler;
         private readonly Mock<IUpdateContactByIdHandler> _updateContactByIdHandler;
-        private readonly Mock<IGetContatListPaginatedByFiltersHandler> _getContatListPaginatedByFiltersHandler;
+        private readonly Mock<IGetContactListPaginatedByFiltersHandler> _getContatListPaginatedByFiltersHandler;
 
         public ContactsTests()
         {
-            _getContatListPaginatedByFiltersHandler = new Mock<IGetContatListPaginatedByFiltersHandler>();
+            _getContatListPaginatedByFiltersHandler = new Mock<IGetContactListPaginatedByFiltersHandler>();
             _updateContactByIdHandler = new Mock<IUpdateContactByIdHandler>();
             _deleteContactByIdHandler = new Mock<IDeleteContactByIdHandler>();
             _getContactBydIdHandler = new Mock<IGetContactBydIdHandler>();
