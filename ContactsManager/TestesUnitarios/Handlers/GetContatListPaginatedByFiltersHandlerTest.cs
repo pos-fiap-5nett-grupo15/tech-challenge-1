@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
 using Moq;
 
 namespace TestesUnitarios.Handlers

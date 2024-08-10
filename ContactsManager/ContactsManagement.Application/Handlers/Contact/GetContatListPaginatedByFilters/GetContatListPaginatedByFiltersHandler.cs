@@ -3,17 +3,18 @@ using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilter
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
 
 public class GetContatListPaginatedByFiltersHandler 
     : IGetContactListPaginatedByFiltersHandler
 {
-    private readonly IContactRepository _contactRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetContatListPaginatedByFiltersHandler(IContactRepository contactRepository) =>
-        _contactRepository = contactRepository;
+    public GetContatListPaginatedByFiltersHandler(IUnitOfWork unitOfWork) =>
+        _unitOfWork = unitOfWork;
 
     public async Task<GetContatListPaginatedByFiltersResponse> HandleAsync(GetContatListPaginatedByFiltersRequest request)
     {
@@ -37,7 +38,7 @@ public class GetContatListPaginatedByFiltersHandler
         }
         else
         {
-            var contacts = await _contactRepository.GetListPaginatedByFiltersAsync(request.Ddd, request.CurrentPage, request.PageSize);
+            var contacts = await this._unitOfWork.ContactRepository.GetListPaginatedByFiltersAsync(request.Ddd, request.CurrentPage, request.PageSize);
 
             return new GetContatListPaginatedByFiltersResponse { Contacts = Mapper(contacts.ToList()) };
         }

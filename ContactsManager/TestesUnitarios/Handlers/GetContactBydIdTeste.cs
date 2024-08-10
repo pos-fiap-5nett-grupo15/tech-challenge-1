@@ -1,7 +1,7 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
 using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
 using Moq;
 
 namespace TestesUnitarios.Handlers

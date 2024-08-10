@@ -2,19 +2,20 @@
 using ContactsManagement.Application.DTOs.User.GetUserList;
 using ContactsManagement.Application.Interfaces.User.GetUser;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories.User;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.User.GetUser
 {
     public class GetUserListHandler : IGetUserListHandler
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetUserListHandler(IUserRepository userRepository) => _userRepository = userRepository;
+        public GetUserListHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
         public async Task<GetUserListResponse?> HandleAsync(GetUserListRequest request)
         {
-            var userList = await _userRepository.GetAllAsync();
+            var userList = await this._unitOfWork.UserRepository.GetAllAsync();
             if (userList is null)
                 return null;
             else

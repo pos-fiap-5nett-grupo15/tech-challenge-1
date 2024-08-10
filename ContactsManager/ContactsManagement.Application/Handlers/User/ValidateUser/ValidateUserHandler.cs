@@ -3,24 +3,26 @@ using ContactsManagement.Application.DTOs.User.GetUser;
 using ContactsManagement.Application.Interfaces.Auth;
 using ContactsManagement.Application.Interfaces.User.ValidateUser;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories.User;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.UnitOfWork;
+
 
 namespace ContactsManagement.Application.Handlers.User.ValidateUser
 {
     public class ValidateUserHandler : IValidateUserHandler
     {
-        private IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private IPasswordHandler _passwordHandler;
 
-        public ValidateUserHandler(IUserRepository userRepository, IPasswordHandler passwordHandler)
+        public ValidateUserHandler(IUnitOfWork unitOfWork, IPasswordHandler passwordHandler)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _passwordHandler = passwordHandler;
         }
 
         public async Task<GetUserResponse?> HandleAsync(LoginRequest request)
         {
-            var user = await _userRepository.GetByNameAsync(request.Username);
+            var user = await this._unitOfWork.UserRepository.GetByNameAsync(request.Username);
 
             if (user != null && _passwordHandler.ValidatePassword(user, request.Password))
             {

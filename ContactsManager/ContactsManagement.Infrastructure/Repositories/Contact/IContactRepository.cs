@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Domain.Entities;
 
-namespace ContactsManagement.Domain.Repositories
+namespace ContactsManagement.Infrastructure.Repositories.Contact
 {
     public interface IContactRepository
     {

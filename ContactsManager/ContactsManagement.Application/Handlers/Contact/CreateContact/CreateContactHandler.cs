@@ -2,16 +2,16 @@
 using ContactsManagement.Application.Interfaces.Contact.CreateContact;
 using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Entities.Validations;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.Contact.CreateContact;
 
 public class CreateContactHandler : ICreateContactHandler
 {
-    private readonly IContactRepository _contactRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateContactHandler(IContactRepository contactRepository) =>
-        _contactRepository = contactRepository;
+    public CreateContactHandler(IUnitOfWork unitOfWork) =>
+        _unitOfWork = unitOfWork;
     
     public async Task<CreateContactResponse> HandleAsync(CreateContactRequest request)
     {
@@ -35,7 +35,7 @@ public class CreateContactHandler : ICreateContactHandler
         }
         else
         {
-            await _contactRepository.CreateAsync(Mapper(request));
+            await this._unitOfWork.ContactRepository.CreateAsync(Mapper(request));
             return new CreateContactResponse();
         }
     }

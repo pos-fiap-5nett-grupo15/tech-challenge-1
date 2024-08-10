@@ -1,20 +1,21 @@
 ﻿using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Enums;
-using ContactsManagement.Infrastructure.Data;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Dapper;
 
-namespace ContactsManagement.Domain.Repositories.User
+namespace ContactsManagement.Infrastructure.Repositoriess.User
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DapperContext _session;
+        private readonly ITech1Database _database;
         private const string TABLE_NAME = "ApiUser";
         private const string SCHEMA = "ContactsManagement";
 
-        public UserRepository(DapperContext session) => _session = session;
+        public UserRepository(ITech1Database database) => _database = database;
 
         public async Task CreateAsync(UserEntity model) =>
-            await _session.Connection.ExecuteAsync(
+            await _database.Connection.ExecuteAsync(
                 $@"INSERT INTO
                     [{SCHEMA}].[{TABLE_NAME}]
                          ({nameof(UserEntity.Username)},
@@ -23,27 +24,23 @@ namespace ContactsManagement.Domain.Repositories.User
                     VALUES
                           ('{model.Username}',
                            '{model.Password}',
-                           {(int)model.UserType});",
-                _session.Transaction);
+                           {(int)model.UserType});");
 
         public async Task DeleteByIdAsync(int id) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
-                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};",
-                _session.Transaction);
+            await _database.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};");
 
         public async Task<IEnumerable<UserEntity>> GetAllAsync() =>
-            await _session.Connection.QueryAsync<UserEntity>(
+            await _database.Connection.QueryAsync<UserEntity>(
                 $@"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}]");
 
         public async Task<UserEntity?> GetByIdAsync(int id) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
-                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};",
-                _session.Transaction);
+            await _database.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Id)} = {id};");
 
         public async Task<UserEntity?> GetByNameAsync(string username) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
-                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Username)} = '{username}';",
-                _session.Transaction);
+            await _database.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(UserEntity.Username)} = '{username}';");
 
         public async Task UpdateByIdAsync(int id, string? username, string? password, EUserType? userType)
         {
@@ -56,11 +53,10 @@ namespace ContactsManagement.Domain.Repositories.User
             if (userType.HasValue)
                 updateColumns.Add($"{nameof(UserEntity.UserType)} = {(int)userType.Value}");
 
-            await _session.Connection.QueryFirstOrDefaultAsync<UserEntity>(
+            await _database.Connection.QueryFirstOrDefaultAsync<UserEntity>(
                 $@"UPDATE [{SCHEMA}].[{TABLE_NAME}]
                    SET {string.Join(",", updateColumns)}
-                   WHERE {nameof(UserEntity.Id)} = {id};",
-                _session.Transaction);
+                   WHERE {nameof(UserEntity.Id)} = {id};");
         }
     }
 }
