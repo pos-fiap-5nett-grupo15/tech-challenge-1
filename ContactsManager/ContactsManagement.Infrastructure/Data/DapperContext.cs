@@ -7,7 +7,7 @@ namespace ContactsManagement.Infrastructure.Data;
 
 public sealed class DapperContext : IDisposable
 {
-    public SqlConnection Connection { get; }
+    public IDbConnection Connection { get; }
     public IDbTransaction? Transaction { get; set; }
 
     public DapperContext(IConfiguration configuration, ICryptoService cryptoService)

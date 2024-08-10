@@ -1,20 +1,21 @@
 ﻿using ContactsManagement.Domain.Entities;
 using ContactsManagement.Infrastructure.Data;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Dapper;
 
-namespace ContactsManagement.Domain.Repositories
+namespace ContactsManagement.Infrastructure.Repositories.Contact
 {
     public class ContactRepository : IContactRepository
     {
-        private readonly DapperContext _session;
+        private readonly ITech1Database _database;
         private const string TABLE_NAME = "Contact";
         private const string SCHEMA = "ContactsManagement";
 
-        public ContactRepository(DapperContext session) =>
-            _session = session;
+        public ContactRepository(ITech1Database database) =>
+            _database = database;
 
         public async Task CreateAsync(ContactEntity model) =>
-            await _session.Connection.ExecuteAsync(
+            await _database.Connection.ExecuteAsync(
                 $@"INSERT INTO
                     [{SCHEMA}].[{TABLE_NAME}]
                          ({nameof(ContactEntity.Nome)},
@@ -25,21 +26,18 @@ namespace ContactsManagement.Domain.Repositories
                           ('{model.Nome}',
                            '{model.Email}',
                            {model.Ddd},
-                           {model.Telefone});",
-                _session.Transaction);
+                           {model.Telefone});");
 
         public async Task<ContactEntity?> GetByIdAsync(int id) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
-                _session.Transaction);
+            await _database.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
+                $"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};");
 
         public async Task DeleteByIdAsync(int id) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
-                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};",
-                _session.Transaction);
+            await _database.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
+                $"DELETE FROM [{SCHEMA}].[{TABLE_NAME}] WHERE {nameof(ContactEntity.Id)} = {id};");
 
         public async Task UpdateByIdAsync(int id, string? nome, string? email, int? ddd, int? telefone) =>
-            await _session.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
+            await _database.Connection.QueryFirstOrDefaultAsync<ContactEntity>(
                 $@"UPDATE [{SCHEMA}].[{TABLE_NAME}]
                    SET
                     {(string.IsNullOrWhiteSpace(nome)
@@ -54,17 +52,15 @@ namespace ContactsManagement.Domain.Repositories
                     {(!telefone.HasValue
                         ? string.Empty
                         : $",{nameof(ContactEntity.Telefone)} = {telefone}")}
-                   WHERE {nameof(ContactEntity.Id)} = {id};",
-                _session.Transaction);
+                   WHERE {nameof(ContactEntity.Id)} = {id};");
 
         public async Task<IEnumerable<ContactEntity>> GetListPaginatedByFiltersAsync(int? ddd, int currentIndex, int pageSize) =>
-            await _session.Connection.QueryAsync<ContactEntity>(
+            await _database.Connection.QueryAsync<ContactEntity>(
                 $@"SELECT * FROM [{SCHEMA}].[{TABLE_NAME}]
                    {(!ddd.HasValue
                         ? string.Empty
                         : $"WHERE {nameof(ContactEntity.Ddd)} = {ddd}")}
                    ORDER BY {nameof(ContactEntity.Id)} ASC
-                   OFFSET {currentIndex} ROWS FETCH FIRST {pageSize} ROWS ONLY;",
-                _session.Transaction);
+                   OFFSET {currentIndex} ROWS FETCH FIRST {pageSize} ROWS ONLY;");
     }
 }

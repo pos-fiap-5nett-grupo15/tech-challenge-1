@@ -2,18 +2,19 @@
 using ContactsManagement.Application.DTOs.User.UpdateUser;
 using ContactsManagement.Application.Interfaces.Auth;
 using ContactsManagement.Application.Interfaces.User.UpdateUser;
-using ContactsManagement.Domain.Repositories.User;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.User.UpdateUser
 {
     public class UpdateUserHandler : IUpdateUserHandler
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHandler _passwordHandler;
 
-        public UpdateUserHandler(IUserRepository contactRepository, IPasswordHandler passwordHandler)
+        public UpdateUserHandler(IUnitOfWork unitOfWork, IPasswordHandler passwordHandler)
         {
-            _userRepository = contactRepository;
+            _unitOfWork = unitOfWork;
             _passwordHandler = passwordHandler;
         }
 
@@ -21,7 +22,7 @@ namespace ContactsManagement.Application.Handlers.User.UpdateUser
         {
             if (!string.IsNullOrEmpty(request.Password))
             {
-                var user = await _userRepository.GetByIdAsync(request.Id.Value);
+                var user = await this._unitOfWork.UserRepository.GetByIdAsync(request.Id.Value);
                 request.Password = _passwordHandler.CreatePassword(new CreateUserRequest()
                 {
                     UserName = user.Username,
@@ -30,7 +31,7 @@ namespace ContactsManagement.Application.Handlers.User.UpdateUser
                 });
             }
 
-            await _userRepository.UpdateByIdAsync(request.Id.Value, request.Username, request.Password, request.UserType);
+            await this._unitOfWork.UserRepository.UpdateByIdAsync(request.Id.Value, request.Username, request.Password, request.UserType);
             return new UpdateUserResponse();
         }
     }

@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
 using ContactsManagement.Application.Handlers.Contact.CreateContact;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
 using Moq;
 
 

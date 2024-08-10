@@ -1,32 +1,58 @@
-﻿using ContactsManagement.Infrastructure.Data;
+﻿using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.Repositoriess.User;
+using System.Transactions;
 
 namespace ContactsManagement.Infrastructure.UnitOfWork;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
-    private readonly DapperContext _session;
+    private readonly ITech1Database _tech1Dabase;
 
-    public UnitOfWork(DapperContext session) => 
-        _session = session;
+    public IContactRepository ContactRepository { get; }
+
+    public IUserRepository UserRepository { get; }
+
+    public UnitOfWork(ITech1Database database)
+    {
+        this._tech1Dabase = database;
+
+        this.ContactRepository = new ContactRepository(this._tech1Dabase);
+        this.UserRepository = new UserRepository(this._tech1Dabase);
+    }
 
     #region Transaction methods:
-    public void BeginTransaction()
+    public ITransaction BeginTransaction()
     {
-        _session.Transaction = _session.Connection.BeginTransaction();
+        var tx = new Transaction();
+        this._tech1Dabase.EnsureConnectionIdOpen();
+        return tx;
     }
 
-    public void Commit()
+    public ITransaction BeginTransaction(TransactionOptions transactionOptions)
     {
-        _session.Transaction.Commit();
-        Dispose();
+        var tx = new Transaction(transactionOptions);
+        this._tech1Dabase.EnsureConnectionIdOpen();
+        return tx;
     }
-
-    public void Rollback()
-    {
-        _session.Transaction.Rollback();
-        Dispose();
-    }
-
-    public void Dispose() => _session.Transaction?.Dispose();
     #endregion Transaction methods.
+
+    #region IDispose Support
+    public bool disposidedValue = false;
+
+    void Dispose(bool disposing)
+    {
+        if (disposidedValue)
+        {
+            this._tech1Dabase.Dispose();
+        }
+        disposidedValue = true;
+    }
+
+
+    public void Dispose() => this.Dispose(true);
+
+    #endregion
+
+
 }

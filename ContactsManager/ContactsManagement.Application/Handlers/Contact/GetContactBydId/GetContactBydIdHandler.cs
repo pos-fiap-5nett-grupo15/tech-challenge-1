@@ -2,16 +2,17 @@
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.GetContactBydId;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.Contact.GetContactBydId;
 
 public class GetContactBydIdHandler : IGetContactBydIdHandler
 {
-    private readonly IContactRepository _contactRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetContactBydIdHandler(IContactRepository contactRepository) =>
-        _contactRepository = contactRepository;
+    public GetContactBydIdHandler(IUnitOfWork unitOfWork) =>
+        _unitOfWork = unitOfWork;
 
     public async Task<GetContactBydIdResponse> HandleAsync(GetContactBydIdRequest request)
     {
@@ -26,7 +27,7 @@ public class GetContactBydIdHandler : IGetContactBydIdHandler
         }
         else
         {
-            var contact = await _contactRepository.GetByIdAsync(request.Id);
+            var contact = await this._unitOfWork.ContactRepository.GetByIdAsync(request.Id);
 
             return Mapper(contact);
         }

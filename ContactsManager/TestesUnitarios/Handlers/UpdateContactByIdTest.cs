@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
 using ContactsManagement.Application.Handlers.Contact.UpdateContactById;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
 using Moq;
 
 namespace TestesUnitarios.Handlers

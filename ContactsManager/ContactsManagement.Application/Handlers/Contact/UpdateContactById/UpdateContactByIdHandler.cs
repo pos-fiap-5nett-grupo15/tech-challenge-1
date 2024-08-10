@@ -1,16 +1,17 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.UpdateContactById;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.Contact.UpdateContactById;
 
 public class UpdateContactByIdHandler : IUpdateContactByIdHandler
 {
-    private readonly IContactRepository _contactRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateContactByIdHandler(IContactRepository contactRepository) =>
-        _contactRepository = contactRepository;
+    public UpdateContactByIdHandler(IUnitOfWork unitOfWork) =>
+        _unitOfWork = unitOfWork;
 
     public async Task<UpdateContactByIdResponse> HandleAsync(UpdateContactByIdRequest request)
     {
@@ -34,7 +35,7 @@ public class UpdateContactByIdHandler : IUpdateContactByIdHandler
         }
         else
         {
-            await _contactRepository.UpdateByIdAsync(request.Id.Value, request.Nome, request.Email, request.Ddd, request.Telefone);
+            await this._unitOfWork.ContactRepository.UpdateByIdAsync(request.Id.Value, request.Nome, request.Email, request.Ddd, request.Telefone);
             return new UpdateContactByIdResponse();
         }
 

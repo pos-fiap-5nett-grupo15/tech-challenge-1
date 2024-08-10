@@ -1,7 +1,7 @@
 ﻿using ContactsManagement.Domain.Entities;
 using ContactsManagement.Domain.Enums;
 
-namespace ContactsManagement.Domain.Repositories.User
+namespace ContactsManagement.Infrastructure.Repositories.User
 {
     public interface IUserRepository
     {

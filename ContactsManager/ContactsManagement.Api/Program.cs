@@ -20,10 +20,7 @@ using ContactsManagement.Application.Interfaces.User.DeleteUser;
 using ContactsManagement.Application.Interfaces.User.GetUser;
 using ContactsManagement.Application.Interfaces.User.UpdateUser;
 using ContactsManagement.Application.Interfaces.User.ValidateUser;
-using ContactsManagement.Domain.Repositories;
-using ContactsManagement.Domain.Repositories.User;
 using ContactsManagement.Infrastructure.Crypto;
-using ContactsManagement.Infrastructure.Data;
 using ContactsManagement.Infrastructure.Middlewares;
 using ContactsManagement.Infrastructure.Settings;
 using ContactsManagement.Infrastructure.UnitOfWork;
@@ -47,8 +44,11 @@ public class Program
         builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
         ConfigureAuthentication(builder.Services, jwtSettings.SecretKey);
+
+        builder.Services.AddSingleton<ICryptoService>(new CryptoService());
+
+        ConfigureDatabaseServices(builder.Services, builder.Configuration);
         ConfigureServices(builder.Services);
-        ConfigureDatabaseServices(builder.Services);
         ConfigureHandleServices(builder.Services);
 
         var app = builder.Build();
@@ -107,12 +107,12 @@ public class Program
         });
     }
 
-    static public void ConfigureDatabaseServices(IServiceCollection services)
+    static public void ConfigureDatabaseServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<DapperContext>();
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
-        services.AddTransient<IContactRepository, ContactRepository>();
-        services.AddTransient<IUserRepository, UserRepository>();
+
+
+        services.AddScoped<ITech1Database,Tech1Database>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
     static public void ConfigureHandleServices(IServiceCollection services)
@@ -132,8 +132,6 @@ public class Program
         services.AddScoped<IGetUserListHandler, GetUserListHandler>();
         services.AddScoped<IUpdateUserHandler, UpdateUserHandler>();
         services.AddScoped<IValidateUserHandler, ValidateUserHandler>();
-
-        services.AddSingleton<ICryptoService>(new CryptoService());
     }
 
     static public void ConfigureAuthentication(IServiceCollection services, string key)

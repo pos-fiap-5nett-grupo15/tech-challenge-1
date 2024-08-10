@@ -1,16 +1,17 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.DeleteContactById;
 using ContactsManagement.Application.DTOs.Validations;
 using ContactsManagement.Application.Interfaces.Contact.DeleteContactById;
-using ContactsManagement.Domain.Repositories;
+using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.Contact.DeleteContactById;
 
 public class DeleteContactByIdHandler : IDeleteContactByIdHandler
 {
-    private readonly IContactRepository _contactRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteContactByIdHandler(IContactRepository contactRepository) =>
-        _contactRepository = contactRepository;
+    public DeleteContactByIdHandler(IUnitOfWork unitOfWork) =>
+        _unitOfWork = unitOfWork;
 
     public async Task<DeleteContactByIdResponse> HandleAsync(DeleteContactByIdRequest request)
     {
@@ -34,7 +35,7 @@ public class DeleteContactByIdHandler : IDeleteContactByIdHandler
         }
         else
         {
-            await _contactRepository.DeleteByIdAsync(request.Id);
+            await this._unitOfWork.ContactRepository.DeleteByIdAsync(request.Id);
             return new DeleteContactByIdResponse();
         }
 

@@ -2,18 +2,19 @@
 using ContactsManagement.Application.Interfaces.Auth;
 using ContactsManagement.Application.Interfaces.User.CreateUser;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Domain.Repositories.User;
+using ContactsManagement.Infrastructure.Repositories.User;
+using ContactsManagement.Infrastructure.UnitOfWork;
 
 namespace ContactsManagement.Application.Handlers.User.CreateUser
 {
     public class CreateUserHandler : ICreateUserHandler
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHandler _passwordHandler;
 
-        public CreateUserHandler(IUserRepository userRepository, IPasswordHandler passwordHandler)
+        public CreateUserHandler(IUnitOfWork unitOfWork, IPasswordHandler passwordHandler)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _passwordHandler = passwordHandler;
         }
 
@@ -21,7 +22,7 @@ namespace ContactsManagement.Application.Handlers.User.CreateUser
         {
             request.Password = _passwordHandler.CreatePassword(request);
 
-            await _userRepository.CreateAsync(Mapper(request));
+            await this._unitOfWork.UserRepository.CreateAsync(Mapper(request));
             return new CreateUserResponse();
         }
 
