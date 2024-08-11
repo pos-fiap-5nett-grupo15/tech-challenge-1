@@ -1,8 +1,7 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.DeleteContactById;
 using ContactsManagement.Application.Handlers.Contact.DeleteContactById;
-using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
-
 
 namespace TestesUnitarios.Handlers
 {
@@ -10,12 +9,12 @@ namespace TestesUnitarios.Handlers
     {
 
         private readonly DeleteContactByIdHandler deleteContactByIdHandler;
-        private readonly Mock<IContactRepository> _contactRepository;
+        private readonly Mock<IUnitOfWork> _unitOfWork;
 
         public DeleteContactByIdTest() 
         {
-           _contactRepository = new Mock<IContactRepository>();
-           deleteContactByIdHandler = new DeleteContactByIdHandler(_contactRepository.Object);
+            _unitOfWork = new Mock<IUnitOfWork>();
+           deleteContactByIdHandler = new DeleteContactByIdHandler(_unitOfWork.Object);
         }
 
         [Fact]

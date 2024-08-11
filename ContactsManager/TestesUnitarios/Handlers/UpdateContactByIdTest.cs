@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
 using ContactsManagement.Application.Handlers.Contact.UpdateContactById;
-using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
 
 namespace TestesUnitarios.Handlers
@@ -8,12 +8,12 @@ namespace TestesUnitarios.Handlers
     public class UpdateContactByIdTest
     {
         private readonly UpdateContactByIdHandler updateContactByIdHandler;
-        private readonly Mock<IContactRepository> _contactRepository;
+        private readonly Mock<IUnitOfWork> _unitOfWork;
 
         public UpdateContactByIdTest()
         {
-            _contactRepository = new Mock<IContactRepository>();
-            updateContactByIdHandler = new UpdateContactByIdHandler(_contactRepository.Object);
+            _unitOfWork = new Mock<IUnitOfWork>();
+            updateContactByIdHandler = new UpdateContactByIdHandler(_unitOfWork.Object);
         }
 
         [Fact]

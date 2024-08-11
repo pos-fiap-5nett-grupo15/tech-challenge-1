@@ -1,20 +1,20 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
 using ContactsManagement.Application.Handlers.Contact.CreateContact;
-using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Domain.Entities;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
-
 
 namespace TestesUnitarios.Handlers
 {
     public class CreateContactHandlerTest
     {
         private readonly CreateContactHandler createContactHandler;
-        private readonly Mock<IContactRepository> _contactRepository;
+        private readonly Mock<IUnitOfWork> _unitOfWork;
 
         public CreateContactHandlerTest()
         {
-            _contactRepository = new Mock<IContactRepository>();
-            createContactHandler = new CreateContactHandler(_contactRepository.Object);
+            _unitOfWork = new Mock<IUnitOfWork>();
+            createContactHandler = new CreateContactHandler(_unitOfWork.Object);
         }
 
         [Fact]
@@ -48,5 +48,6 @@ namespace TestesUnitarios.Handlers
 
             Assert.True(result.ErrorDescription != null);
         }
+
     }
 }

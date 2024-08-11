@@ -1,6 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
-using ContactsManagement.Infrastructure.Repositories.Contact;
+using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
 
 namespace TestesUnitarios.Handlers
@@ -8,13 +8,13 @@ namespace TestesUnitarios.Handlers
     public class GetContatListPaginatedByFiltersHandlerTest
     {
         private readonly GetContatListPaginatedByFiltersHandler getContatListPaginatedByFiltersHandler;
-        private readonly Mock<IContactRepository> _contactRepository;
+        private readonly Mock<IUnitOfWork> _unitOfWork;
 
 
         public GetContatListPaginatedByFiltersHandlerTest()
         {
-            _contactRepository = new Mock<IContactRepository>();
-            getContatListPaginatedByFiltersHandler = new GetContatListPaginatedByFiltersHandler(_contactRepository.Object);
+            _unitOfWork = new Mock<IUnitOfWork>();
+            getContatListPaginatedByFiltersHandler = new GetContatListPaginatedByFiltersHandler(_unitOfWork.Object);
         }
 
         [Fact]
