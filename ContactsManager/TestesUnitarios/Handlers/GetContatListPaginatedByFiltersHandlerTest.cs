@@ -1,5 +1,6 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
+using ContactsManagement.Domain.Entities;
 using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
 
@@ -20,6 +21,7 @@ namespace TestesUnitarios.Handlers
         [Fact]
         public async void GetContatListPaginatedByFiltersSucess()
         {
+            //set
             GetContatListPaginatedByFiltersRequest filter = new GetContatListPaginatedByFiltersRequest
             {
                 CurrentPage = 1,
@@ -27,8 +29,15 @@ namespace TestesUnitarios.Handlers
                 Ddd = 11
             };
 
+
+            this._unitOfWork.Setup(x => x.ContactRepository.CreateAsync(It.IsAny<ContactEntity>()))
+                            .Returns(Task.CompletedTask);
+
+
+            //act
             var result = await getContatListPaginatedByFiltersHandler.HandleAsync(filter);
 
+            //assert
             Assert.True(result.ErrorDescription == null);
         }
 

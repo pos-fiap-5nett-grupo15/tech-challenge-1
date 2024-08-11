@@ -7,6 +7,10 @@ namespace ContactsManagement.Application.DTOs.Validations
     {
         public UpdateByIdValidation()
         {
+            RuleFor(c => c.Id)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("O campo {PropertyName} precisa ser fornecido"); ;
             RuleFor(c => c.Nome)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
 
