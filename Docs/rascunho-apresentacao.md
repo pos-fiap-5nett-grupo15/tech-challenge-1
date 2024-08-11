@@ -61,7 +61,7 @@ Na camada de domínio colocamos as entidade e os objetos de valor, o que seria b
 
 ## Camada de Aplicação
 
-Na camada de aplicação colocamos os nossos handles e utilizamos esta estrutura para que ganhássemos vantagens como segregação de responsabilidades, simplificar possíveis testes, facilitar manutenção ou possíveis ampliações do sistema.
+Na camada de aplicação colocamos os nossos handles e utilizamos esta estrutura para que ganhássemos vantagens como segregação de responsabilidades, simplificar possíveis testes, facilitar manutenção ou possíveis ampliações do sistema. Vale ainda ressaltar que as regras de negócio presentes no projeto eram relacionadas a validação dos dados presentes nas entidades entidades, deste modo optamos realizar estas validações utilizando a biblioteca Fluent Validations.
 
 
 ## Camada de Apresentação
@@ -87,12 +87,13 @@ Utilizamos o middleware padrão da Microsoft para fazer o processo de autorizaç
 
 ## Autorização e Autenticação
 
+Em nossa solução optamos pela simplicidade de implementação nos processos autorização e autenticação. Deste modo, as soluções escolhidas foram: autenticação mediando usuário e senha enviado no corpo de requisição, seguida de autenticação e autorização mediando JWT.
+Nossa aplicação é dotada de um endpoint que permite a geração de um JWT 
 
 
 ## Testes Unitários
 
-
-
+Para realização de testes unitários foi utilizada a biblioteca XUnit e os testes implementados foram os relacionados a execução sem erros dos Handlers.
 
 
 
