@@ -24,8 +24,9 @@ namespace TestesUnitarios.Handlers
             {
                Id = 1
             };
+            _unitOfWork.Setup(x => x.ContactRepository.GetByIdAsync(request.Id))
+                       .Returns(MockData.GetContact);
 
-            _unitOfWork.Setup(x => x.UserRepository.GetByIdAsync(request.Id)).Returns(MockData.GetContact);
 
             var result = await getContatListPaginatedByFiltersHandlerTest.HandleAsync(request);
 

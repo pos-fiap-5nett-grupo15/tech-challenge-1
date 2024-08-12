@@ -20,6 +20,8 @@ namespace TestesUnitarios.Handlers
         [Fact]
         public async void CreateContactSucess()
         {
+
+            //set
             CreateContactRequest Contact = new CreateContactRequest
             {
                 Nome = "Antonia Mesquita",
@@ -28,8 +30,13 @@ namespace TestesUnitarios.Handlers
                 Telefone = 996578756
             };
 
+            this._unitOfWork.Setup(x => x.ContactRepository.CreateAsync(It.IsAny<ContactEntity>()))
+                            .Returns(Task.CompletedTask);
+
+            //act
             var result = await createContactHandler.HandleAsync(Contact);
 
+            //assert
             Assert.True(result.ErrorDescription == null);
         }
 
