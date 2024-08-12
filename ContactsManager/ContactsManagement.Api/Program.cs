@@ -22,6 +22,7 @@ using ContactsManagement.Application.Interfaces.User.UpdateUser;
 using ContactsManagement.Application.Interfaces.User.ValidateUser;
 using ContactsManagement.Infrastructure.Crypto;
 using ContactsManagement.Infrastructure.Middlewares;
+using ContactsManagement.Infrastructure.Services.Contact;
 using ContactsManagement.Infrastructure.Settings;
 using ContactsManagement.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,6 +51,7 @@ public class Program
         ConfigureDatabaseServices(builder.Services, builder.Configuration);
         ConfigureServices(builder.Services);
         ConfigureHandleServices(builder.Services);
+        ConfigureContactServices(builder.Services);
 
         var app = builder.Build();
         if (app.Environment.IsDevelopment())
@@ -132,6 +134,11 @@ public class Program
         services.AddScoped<IGetUserListHandler, GetUserListHandler>();
         services.AddScoped<IUpdateUserHandler, UpdateUserHandler>();
         services.AddScoped<IValidateUserHandler, ValidateUserHandler>();
+    }
+
+    static public void ConfigureContactServices(IServiceCollection services)
+    {
+        services.AddScoped<IContactService, ContactService>();
     }
 
     static public void ConfigureAuthentication(IServiceCollection services, string key)
