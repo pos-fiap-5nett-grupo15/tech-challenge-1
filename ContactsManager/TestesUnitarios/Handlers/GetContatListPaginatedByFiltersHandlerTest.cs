@@ -1,6 +1,7 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Application.Handlers.Contact.GetContatListPaginatedByFilters;
 using ContactsManagement.Domain.Entities;
+using ContactsManagement.Infrastructure.Services.Contact;
 using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
 
@@ -9,13 +10,13 @@ namespace TestesUnitarios.Handlers
     public class GetContatListPaginatedByFiltersHandlerTest
     {
         private readonly GetContatListPaginatedByFiltersHandler getContatListPaginatedByFiltersHandler;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
+        private readonly Mock<IContactService> _contactService;
 
 
         public GetContatListPaginatedByFiltersHandlerTest()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            getContatListPaginatedByFiltersHandler = new GetContatListPaginatedByFiltersHandler(_unitOfWork.Object);
+            _contactService = new Mock<IContactService>();
+            getContatListPaginatedByFiltersHandler = new GetContatListPaginatedByFiltersHandler(_contactService.Object);
         }
 
         [Fact]
@@ -30,7 +31,7 @@ namespace TestesUnitarios.Handlers
             };
 
 
-            this._unitOfWork.Setup(x => x.ContactRepository.CreateAsync(It.IsAny<ContactEntity>()))
+            this._contactService.Setup(x => x.CreateAsync(It.IsAny<ContactEntity>()))
                             .Returns(Task.CompletedTask);
 
 

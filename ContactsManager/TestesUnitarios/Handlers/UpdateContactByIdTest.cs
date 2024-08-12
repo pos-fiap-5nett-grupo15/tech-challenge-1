@@ -1,21 +1,20 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.UpdateContactById;
 using ContactsManagement.Application.Handlers.Contact.UpdateContactById;
-using ContactsManagement.Domain.Entities;
+using ContactsManagement.Infrastructure.Services.Contact;
 using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
-using static TestesUnitarios.Handlers.GetContactBydIdTeste;
 
 namespace TestesUnitarios.Handlers
 {
     public class UpdateContactByIdTest
     {
         private readonly UpdateContactByIdHandler updateContactByIdHandler;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
+        private readonly Mock<IContactService> _contactService;
 
         public UpdateContactByIdTest()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            updateContactByIdHandler = new UpdateContactByIdHandler(_unitOfWork.Object);
+            _contactService = new Mock<IContactService>();
+            updateContactByIdHandler = new UpdateContactByIdHandler(_contactService.Object);
         }
 
         [Fact]
@@ -33,7 +32,7 @@ namespace TestesUnitarios.Handlers
 
 
             //act
-            this._unitOfWork.Setup(x => x.ContactRepository.UpdateByIdAsync(
+            this._contactService.Setup(x => x.UpdateByIdAsync(
                                 It.IsAny<int>(),
                                 It.IsAny<string>(),
                                 It.IsAny<string>(),
