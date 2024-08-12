@@ -1,7 +1,7 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.GetContactBydId;
 using ContactsManagement.Application.Handlers.Contact.GetContactBydId;
 using ContactsManagement.Domain.Entities;
-using ContactsManagement.Infrastructure.UnitOfWork;
+using ContactsManagement.Infrastructure.Services.Contact;
 using Moq;
 
 namespace TestesUnitarios.Handlers
@@ -9,12 +9,12 @@ namespace TestesUnitarios.Handlers
     public class GetContactBydIdTeste
     {
         private readonly GetContactBydIdHandler getContatListPaginatedByFiltersHandlerTest;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
+        private readonly Mock<IContactService> _contactService;
 
         public GetContactBydIdTeste()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            getContatListPaginatedByFiltersHandlerTest = new GetContactBydIdHandler(_unitOfWork.Object);
+            _contactService = new Mock<IContactService>();
+            getContatListPaginatedByFiltersHandlerTest = new GetContactBydIdHandler(_contactService.Object);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace TestesUnitarios.Handlers
             {
                Id = 1
             };
-            _unitOfWork.Setup(x => x.ContactRepository.GetByIdAsync(request.Id))
+            _contactService.Setup(x => x.GetByIdAsync(request.Id))
                        .Returns(MockData.GetContact);
 
 

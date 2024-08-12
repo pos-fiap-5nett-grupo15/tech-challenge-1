@@ -1,6 +1,7 @@
 ﻿using ContactsManagement.Application.DTOs.Contact.CreateContact;
 using ContactsManagement.Application.Handlers.Contact.CreateContact;
 using ContactsManagement.Domain.Entities;
+using ContactsManagement.Infrastructure.Services.Contact;
 using ContactsManagement.Infrastructure.UnitOfWork;
 using Moq;
 
@@ -9,12 +10,12 @@ namespace TestesUnitarios.Handlers
     public class CreateContactHandlerTest
     {
         private readonly CreateContactHandler createContactHandler;
-        private readonly Mock<IUnitOfWork> _unitOfWork;
+        private readonly Mock<IContactService> _contactService;
 
         public CreateContactHandlerTest()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            createContactHandler = new CreateContactHandler(_unitOfWork.Object);
+            _contactService = new Mock<IContactService>();
+            createContactHandler = new CreateContactHandler(_contactService.Object);
         }
 
         [Fact]
@@ -30,7 +31,7 @@ namespace TestesUnitarios.Handlers
                 Telefone = 996578756
             };
 
-            this._unitOfWork.Setup(x => x.ContactRepository.CreateAsync(It.IsAny<ContactEntity>()))
+            this._contactService.Setup(x => x.CreateAsync(It.IsAny<ContactEntity>()))
                             .Returns(Task.CompletedTask);
 
             //act
